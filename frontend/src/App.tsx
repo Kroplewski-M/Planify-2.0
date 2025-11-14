@@ -1,11 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
   const [count, setCount] = useState(0)
-
+  useEffect(() => {
+    fetch('http://localhost:8000/api/health')
+      .then(res => res)
+      .then(data => console.log(data))
+      .catch(err => console.error(err));
+  }, []);
   return (
     <>
       <div>

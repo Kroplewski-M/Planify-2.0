@@ -1,0 +1,50 @@
+services:
+  # Laravel backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: planify-backend
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./backend:/var/www
+      - ./backend/vendor:/var/www/vendor
+    env_file:
+      - .env.backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    command: sh -c "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: planify-frontend
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173" # Vite default port
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    depends_on:
+      - backend
+
+  # PostgreSQL database
+  db:
+    image: postgres:18
+    container_name: planify-db
+    restart: unless-stopped
+    env_file:
+      - .env.db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+volumes:
+  pgdata:
