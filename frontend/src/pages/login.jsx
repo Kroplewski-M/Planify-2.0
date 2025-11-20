@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6 -mt-16">
@@ -28,6 +30,12 @@ export default function Login() {
           >
             Login
           </button>
+          <NavLink
+            to={"/Register"}
+            className="text-center py-2 text-primary cursor-pointer"
+          >
+            Register instead
+          </NavLink>
         </form>
       </div>
     </div>
