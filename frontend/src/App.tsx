@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from "./pages/home";
 import Login from "./pages/login";
+import Nav from "./components/nav";
 
 function App() {
   useEffect(() => {
@@ -13,6 +14,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
+      <Nav/>
         <Routes>
             <Route path="/" element={<Home/>} />
             <Route path="/Login" element={<Login/>} />
