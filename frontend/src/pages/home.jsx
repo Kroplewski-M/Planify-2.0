@@ -1,7 +1,56 @@
-export default function Home(){
-    return(
-        <>
-            <h1 className="">Home</h1>
-        </>
-    )
+import { NavLink } from "react-router-dom";
+
+export default function Home() {
+  return (
+    <div className="w-full">
+      <header className="py-16">
+        <div className="container mx-auto text-center">
+          <h1 className="text-5xl font-bold mb-4">Planify</h1>
+          <p className="text-lg mb-6">
+            Create events, join events, and stay organized effortlessly.
+          </p>
+
+          <div className="flex justify-center gap-4">
+            <NavLink
+              to="/create"
+              className="px-6 py-3 bg-primary text-white rounded-2xl shadow hover:bg-primary/90 transition"
+            >
+              Create Event
+            </NavLink>
+            <NavLink
+              to="/events"
+              className="px-6 py-3 bg-accent text-white rounded-2xl shadow hover:bg-accent/90 transition"
+            >
+              Go to Events
+            </NavLink>
+          </div>
+        </div>
+      </header>
+
+      <section className="container mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 features">
+        <div className="p-6 bg-white shadow rounded-2xl">
+          <h3 className="text-xl font-semibold mb-2">Create Your Event</h3>
+          <p>
+            Easily set up events with date, time, location, and invite friends
+            with a click.
+          </p>
+        </div>
+
+        <div className="p-6 bg-white shadow rounded-2xl">
+          <h3 className="text-xl font-semibold mb-2">Join Events</h3>
+          <p>
+            Find events you’re invited to or discover new ones happening near
+            you.
+          </p>
+        </div>
+
+        <div className="p-6 bg-white shadow rounded-2xl">
+          <h3 className="text-xl font-semibold mb-2">Stay Organized</h3>
+          <p>
+            Keep track of your upcoming events and never miss out on the fun.
+          </p>
+        </div>
+      </section>
+    </div>
+  );
 }
