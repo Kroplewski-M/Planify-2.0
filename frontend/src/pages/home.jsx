@@ -5,7 +5,9 @@ export default function Home() {
     <div className="w-full">
       <header className="py-16">
         <div className="container mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-4">Planify</h1>
+          <h1 className="text-5xl font-bold mb-4 font-header text-accent">
+            Planify
+          </h1>
           <p className="text-lg mb-6">
             Create events, join events, and stay organized effortlessly.
           </p>
@@ -29,7 +31,9 @@ export default function Home() {
 
       <section className="container mx-auto mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 features">
         <div className="p-6 bg-white shadow rounded-2xl">
-          <h3 className="text-xl font-semibold mb-2">Create Your Event</h3>
+          <h3 className="text-xl font-semibold mb-2 font-header text-accent">
+            Create Your Event
+          </h3>
           <p>
             Easily set up events with date, time, location, and invite friends
             with a click.
@@ -37,7 +41,9 @@ export default function Home() {
         </div>
 
         <div className="p-6 bg-white shadow rounded-2xl">
-          <h3 className="text-xl font-semibold mb-2">Join Events</h3>
+          <h3 className="text-xl font-semibold mb-2 font-header text-accent">
+            Join Events
+          </h3>
           <p>
             Find events you’re invited to or discover new ones happening near
             you.
@@ -45,7 +51,9 @@ export default function Home() {
         </div>
 
         <div className="p-6 bg-white shadow rounded-2xl">
-          <h3 className="text-xl font-semibold mb-2">Stay Organized</h3>
+          <h3 className="text-xl font-semibold mb-2 font-header text-accent">
+            Stay Organized
+          </h3>
           <p>
             Keep track of your upcoming events and never miss out on the fun.
           </p>
