@@ -1,10 +1,20 @@
-
+import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import axiosClient from "../axios-client";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
 
+  const logoutUser = () => {
+    axiosClient.post('/auth/logout')
+      .then(() => {
+        logout();
+        navigate("/events");
+      });
+  }
   return (
     <nav className="w-screen bg-primary shadow-md sticky top-0 z-50 flex items-center px-6 h-20">
       <div className="flex items-center justify-between w-full">
@@ -32,31 +42,47 @@ export default function Navbar() {
           >
             Events
           </NavLink>
-
-          <NavLink
-            to="/create"
-            className={({ isActive }) =>
-              `text-accent text-xl hover:font-bold transition-all ${isActive ? "underline underline-offset-4 decoration-2" : ""
-              }`
-            }
-          >
-            Create
-          </NavLink>
+          {
+            isAuthenticated ? (
+              <NavLink
+                to="/create"
+                className={({ isActive }) =>
+                  `text-accent text-xl hover:font-bold transition-all ${isActive ? "underline underline-offset-4 decoration-2" : ""
+                  }`
+                }
+              >
+                Create
+              </NavLink>
+            ) : ("")
+          }
         </div>
 
         <div className="hidden lg:flex gap-4">
-          <NavLink
-            to="/register"
-            className="bg-secondary text-primary px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition"
-          >
-            Register
-          </NavLink>
-          <NavLink
-            to="/login"
-            className="bg-accent text-amber-50 px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition"
-          >
-            Login
-          </NavLink>
+          {!isAuthenticated ? (
+            <>
+              <NavLink
+                to="/register"
+                className="bg-secondary text-primary px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition"
+              >
+                Register
+              </NavLink>
+
+              <NavLink
+                to="/login"
+                className="bg-accent text-amber-50 px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition"
+              >
+                Login
+              </NavLink>
+            </>
+          ) :
+            <>
+              <button onClick={logoutUser}
+                className="bg-red-500 text-amber-50 px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition cursor-pointer"
+              >
+                Logout
+              </button>
+            </>
+          }
         </div>
       </div>
 
@@ -69,30 +95,44 @@ export default function Navbar() {
           >
             Events
           </NavLink>
+          {
+            isAuthenticated ? (
+              <NavLink
+                to="/create"
+                className={({ isActive }) =>
+                  `text-accent text-xl hover:font-bold transition-all ${isActive ? "underline underline-offset-4 decoration-2" : ""
+                  }`
+                }
+              >
+                Create
+              </NavLink>
+            ) : ("")
+          }
+          {!isAuthenticated ? (
+            <>
+              <NavLink
+                to="/register"
+                className="bg-secondary text-primary px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition"
+              >
+                Register
+              </NavLink>
 
-          <NavLink
-            to="/create"
-            onClick={() => setOpen(false)}
-            className="text-accent text-xl px-2 mt-3"
-          >
-            Create
-          </NavLink>
-
-          <NavLink
-            to="/register"
-            onClick={() => setOpen(false)}
-            className="bg-secondary text-primary px-4 py-3 rounded-lg font-semibold text-center mt-3"
-          >
-            Register
-          </NavLink>
-
-          <NavLink
-            to="/login"
-            onClick={() => setOpen(false)}
-            className="bg-accent text-amber-50 px-4 py-3 rounded-lg font-semibold text-center mt-3"
-          >
-            Login
-          </NavLink>
+              <NavLink
+                to="/login"
+                className="bg-accent text-amber-50 px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition"
+              >
+                Login
+              </NavLink>
+            </>
+          ) :
+            <>
+              <button onClick={logoutUser}
+                className="bg-red-500 text-amber-50 px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition cursor-pointer"
+              >
+                Logout
+              </button>
+            </>
+          }
         </div>
       )}
     </nav>

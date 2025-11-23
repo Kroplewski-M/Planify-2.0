@@ -12,18 +12,14 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     public function register(RegisterRequest $request){
-        try {
-            $data = $request->validated();
-            $user = User::create([
-                'name' => $data['firstname'] . ' ' . $data['lastname'],
-                'email' => $data['email'],
-                'password' => bcrypt($data['password']),
-            ]);
-            $token = $user->createToken('auth')->plainTextToken;
-            return response()->json(['token' => $token], 201);
-        } catch (\Throwable $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        $data = $request->validated();
+        $user = User::create([
+            'name' => $data['firstname'] . ' ' . $data['lastname'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+        ]);
+        $token = $user->createToken('auth')->plainTextToken;
+        return response()->json(['token' => $token], 201);
     }
     public function login(LoginRequest $request){
         $credentials = $request->validated();
@@ -39,6 +35,6 @@ class AuthController extends Controller
     public function logout(Request $request){
         $user = $request->user();
         $user->currentAccessToken()->delete();
-        return response('Ok', 204);
+        return response()->noContent();
     }
 }

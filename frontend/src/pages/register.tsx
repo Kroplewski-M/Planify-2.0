@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import axiosClient from "../axios-client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
 interface RegisterForm {
@@ -15,7 +15,12 @@ export default function Register() {
     const { register, handleSubmit, formState: { errors } } = useForm<RegisterForm>();
     const navigate = useNavigate();
     const [serverErrors, setServerErrors] = useState<string[]>([]);
-    const { login } = useAuth();
+    const { login, isAuthenticated } = useAuth();
+
+    useEffect(() => {
+        if (isAuthenticated)
+            navigate("/events");
+    }, []);
 
     const onSubmit: SubmitHandler<RegisterForm> = (data) => {
         console.log(data);
