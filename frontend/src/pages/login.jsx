@@ -31,7 +31,7 @@ export default function Login() {
             Login
           </button>
           <NavLink
-            to={"/Register"}
+            to={"/register"}
             className="text-center py-2 text-primary cursor-pointer"
           >
             Register instead

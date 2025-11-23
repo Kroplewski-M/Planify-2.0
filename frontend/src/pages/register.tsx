@@ -1,5 +1,8 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import axiosClient from "../axios-client";
+import { useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 interface RegisterForm {
     firstname: string,
@@ -10,8 +13,29 @@ interface RegisterForm {
 
 export default function Register() {
     const { register, handleSubmit, formState: { errors } } = useForm<RegisterForm>();
+    const navigate = useNavigate();
+    const [serverErrors, setServerErrors] = useState<string[]>([]);
+    const { login } = useAuth();
+
     const onSubmit: SubmitHandler<RegisterForm> = (data) => {
         console.log(data);
+        axiosClient.post('/auth/register', data)
+            .then((res) => {
+                login(res.data.token);
+                navigate("/Events");
+            })
+            .catch(err => {
+                console.log(err);
+                const response = err.response.data;
+                if (response?.errors) {
+                    const flattenedErrors = Object.values(response.errors).flat() as string[];
+                    setServerErrors(flattenedErrors);
+                } else if (response?.error) {
+                    setServerErrors([response.error]);
+                } else {
+                    setServerErrors(["Unexpected error occurred"]);
+                }
+            });
     };
 
     return (
@@ -27,7 +51,7 @@ export default function Register() {
                         </label>
                         <input
                             {...register("firstname", { required: "Firstname is required", maxLength: { value: 50, message: "Max length is 50" } })}
-                            className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring focus:ring-accent"
+                            className={`${errors.firstname ? "border-red-500" : ""} w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring focus:ring-accent`}
                         />
                         {errors.firstname && (
                             <p className="text-red-500 text-sm mt-1">
@@ -41,7 +65,7 @@ export default function Register() {
                         </label>
                         <input
                             {...register("lastname", { required: "Lastname is required", maxLength: { value: 50, message: "Max length is 50" } })}
-                            className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring focus:ring-accent"
+                            className={`${errors.lastname ? "border-red-500" : ""} w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring focus:ring-accent`}
                         />
                         {errors.lastname && (
                             <p className="text-red-500 text-sm mt-1">
@@ -61,7 +85,7 @@ export default function Register() {
                                     message: "Invalid email address",
                                 },
                             })}
-                            className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring focus:ring-accent"
+                            className={`${errors.email ? "border-red-500" : ""} w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring focus:ring-accent`}
                         />
                         {errors.email && (
                             <p className="text-red-500 text-sm mt-1">
@@ -74,7 +98,7 @@ export default function Register() {
                         <input
                             type="password"
                             {...register("password", { required: "Password is required", minLength: { value: 5, message: "Min length is 5" } })}
-                            className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring focus:ring-accent"
+                            className={`${errors.password ? "border-red-500" : ""} w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring focus:ring-accent`}
                         />
                         {errors.password && (
                             <p className="text-red-500 text-sm mt-1">
@@ -88,7 +112,14 @@ export default function Register() {
                     >
                         Register
                     </button>
-                    <NavLink to={"/Login"} className="text-center py-2 text-primary cursor-pointer">
+                    {serverErrors.length > 0 && (
+                        <ul className="list-none">
+                            {serverErrors.map((err, i) => (
+                                <li key={i} className="text-red-500">{err}</li>
+                            ))}
+                        </ul>
+                    )}
+                    <NavLink to={"/login"} className="text-center py-2 text-primary cursor-pointer">
                         Login instead
                     </NavLink>
                 </form>
