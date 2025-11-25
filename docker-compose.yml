@@ -9,7 +9,7 @@ services:
     working_dir: /var/www
     volumes:
       - ./backend:/var/www
-      - ./backend/vendor:/var/www/vendor
+      - /var/www/vendor
     env_file:
       - .env.backend
     ports:
