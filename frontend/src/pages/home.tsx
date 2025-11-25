@@ -59,6 +59,16 @@ export default function Home() {
           </p>
         </div>
       </section>
+      <iframe
+        width="600"
+        height="450"
+        style={{ border: 0 }}
+        loading="lazy"
+        allowFullScreen
+        referrerPolicy="no-referrer-when-downgrade"
+        src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_API_KEY}
+          &q=29+Poplars+road+Barnsley`}>
+      </iframe>
     </div>
   );
 }
