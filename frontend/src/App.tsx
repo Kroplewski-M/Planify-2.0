@@ -1,8 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from "./pages/home";
-import Login from "./pages/login";
+import Login from "./pages/Auth/login";
 import Nav from "./components/nav";
-import Register from './pages/register';
+import Register from './pages/Auth/register';
+import CreateEvent from './pages/Event/CreateEvent';
+import { RequireAuth } from './components/RequiredAuth';
 
 
 function App() {
@@ -14,6 +16,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
+          <Route element={<RequireAuth />}>
+            <Route path="/Create" element={<CreateEvent />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>

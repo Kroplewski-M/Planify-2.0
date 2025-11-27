@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
-
+import { useAuth } from "../contexts/AuthContext";
 export default function Home() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <div className="w-full">
       <header className="py-16">
@@ -13,12 +15,16 @@ export default function Home() {
           </p>
 
           <div className="flex justify-center gap-4">
-            <NavLink
-              to="/create"
-              className="px-6 py-3 bg-primary text-white rounded-2xl shadow hover:bg-primary/90 transition"
-            >
-              Create Event
-            </NavLink>
+            {
+              isAuthenticated ? (<>
+                <NavLink
+                  to="/create"
+                  className="px-6 py-3 bg-primary text-white rounded-2xl shadow hover:bg-primary/90 transition"
+                >
+                  Create Event
+                </NavLink>
+              </>) : (<></>)
+            }
             <NavLink
               to="/events"
               className="px-6 py-3 bg-accent text-white rounded-2xl shadow hover:bg-accent/90 transition"

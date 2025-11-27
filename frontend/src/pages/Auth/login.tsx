@@ -1,8 +1,8 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
-import axiosClient from "../axios-client";
+import axiosClient from "../../axios-client";
 
 interface LoginFormInput {
   email: string;
@@ -14,6 +14,8 @@ export default function Login() {
   const { register, handleSubmit } = useForm<LoginFormInput>();
   const [serverErrors, setServerErrors] = useState<string[]>([]);
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/events";
 
   useEffect(() => {
     if (isAuthenticated)
@@ -28,10 +30,9 @@ export default function Login() {
       .then((res) => {
         if (res.status === 200) {
           login(res.data.token);
-          navigate("/events");
+          navigate(from);
         }
         else {
-          console.log(res.data.errors)
           setServerErrors([res.data.errors]);
         }
       })
