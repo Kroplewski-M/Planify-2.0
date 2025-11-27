@@ -42,7 +42,6 @@ class EventController extends Controller
     {
         $data = $request->validated();
         $eventId = Str::uuid()->toString();
-
         $event = Event::create([
             'id' => $eventId,
             'name' => $data['name'],
@@ -52,7 +51,7 @@ class EventController extends Controller
             'publish' => $data['publish'] ?? false,
             'max_attendees' => $data['max_attendees'] ?? null,
             'created_by_user_id' => Auth::id(),
-            'meetingLinkId' => $data['meeting_link'] ?? null,
+            'meetingLinkId' => isset($data['meeting_link']) ? $eventId : null,
             'addressId' => isset($data['address']) ? $eventId : null,
         ]);
 

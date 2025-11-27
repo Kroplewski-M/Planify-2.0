@@ -82,6 +82,7 @@ export default function EventForm({
             </div>
 
             <div>
+                <label className="block text-sm font-medium mb-1 text-accent">Happening Until</label>
                 <input
                     type="datetime-local"
                     {...register("happening_until", {
@@ -89,7 +90,7 @@ export default function EventForm({
                             const start = watch("happening_at");
                             if (!value) return true; // optional
                             if (new Date(value) < new Date(start)) {
-                                return "End time must be greater than or equal to start time";
+                                return "Happening until must be on or after happening at";
                             }
                             return true;
                         }
@@ -102,6 +103,7 @@ export default function EventForm({
             </div>
 
             <div>
+                <label className="block text-sm font-medium mb-1 text-accent">Max Attendees</label>
                 <input
                     type="number"
                     {...register("max_attendees", {
@@ -150,7 +152,21 @@ export default function EventForm({
                     <label className="block text-sm mb-1 text-accent">Meeting Link</label>
                     <input
                         {...register("meeting_link", {
-                            required: selectedType === EventType.ONLINE ? "Meeting link is required." : false,
+                            required:
+                                selectedType === EventType.ONLINE
+                                    ? "Meeting link is required."
+                                    : false,
+
+                            validate: (value) => {
+                                if (selectedType !== EventType.ONLINE) return true;
+                                const url = value ?? "";
+                                try {
+                                    new URL(url);
+                                    return true;
+                                } catch {
+                                    return "Please enter a valid URL.";
+                                }
+                            }
                         })}
                         className={`w-full px-4 py-2 border rounded-xl ${errors.meeting_link ? "border-red-500" : ""}`}
                     />

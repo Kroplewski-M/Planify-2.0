@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Event extends Model
 {
@@ -13,16 +14,16 @@ class Event extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'name', 'description', 'happening_at', 'happening_until',
+        'id','name', 'description', 'happening_at', 'happening_until',
         'publish', 'max_attendees', 'created_by_user_id',
         'meetingLinkId', 'addressId'
     ];
-    public function meeting(): bool
+    public function meeting(): HasOne
     {
         return $this->hasOne(EventMeeting::class, 'id');
     }
 
-    public function address(): bool
+    public function address(): HasOne
     {
         return $this->hasOne(EventAddress::class, 'id');
     }
