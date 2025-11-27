@@ -5,6 +5,7 @@ import Nav from "./components/nav";
 import Register from './pages/Auth/register';
 import CreateEvent from './pages/Event/CreateEvent';
 import { RequireAuth } from './components/RequiredAuth';
+import EditEvent from './pages/Event/EditEvent';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/Register" element={<Register />} />
           <Route element={<RequireAuth />}>
             <Route path="/Create" element={<CreateEvent />} />
+            <Route path="/Edit/:id" element={<EditEvent />} />
           </Route>
         </Routes>
       </BrowserRouter>

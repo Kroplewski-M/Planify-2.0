@@ -23,6 +23,11 @@ class EventController extends Controller
                     ->get();
         return response()->json($events);
     }
+    public function Show($id){
+        $event = Event::with(['address', 'meeting'])
+                  ->findOrFail($id);
+        return response()->json($event);
+    }
     public function myEvents(Request $request)
     {
         $userId = $request->user()->id;
@@ -90,24 +95,35 @@ class EventController extends Controller
             'publish' => $data['publish'] ?? $event->publish,
             'max_attendees' => $data['max_attendees'] ?? $event->max_attendees,
         ]);
-
         if (isset($data['meeting_link'])) {
-            $event->meeting ? $event->meeting->update(['link' => $data['meeting_link']]) :
-                EventMeeting::create(['id' => $event->id, 'link' => $data['meeting_link']]);
-            if ($event->address) {
-                $event->address->delete();
+            $event->address?->delete();
+
+            if ($event->meeting) {
+                $event->meeting->update(['link' => $data['meeting_link']]);
             }
+            else {
+                EventMeeting::create(['id' => $event->id, 'link' => $data['meeting_link']]);
+            }
+            $event->update([
+                'meetingLinkId' => $event->id,
+                'addressId' => null
+            ]);
         }
-
         if (isset($data['address'])) {
-            $event->address ? $event->address->update($data['address']) :
-                EventAddress::create(array_merge(['id' => $event->id], $data['address']));
-            if ($event->meeting){
-                $event->meeting->delete();
-            } 
-        }
+            $event->meeting?->delete();
 
-        return response()->json($event->load(['address', 'meeting']));
+            if ($event->address) {
+                $event->address->update($data['address']);
+            } 
+            else {
+                EventAddress::create(array_merge(['id' => $event->id], $data['address']));
+            }
+            $event->update([
+                'addressId' => $event->id,
+                'meetingLinkId' => null
+            ]);
+        }
+        return response()->json(Event::with(['address', 'meeting'])->findOrFail($id));
     }
     public function destroy($id)
     {
