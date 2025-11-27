@@ -28,7 +28,12 @@ export default function EventForm({
             publish: false,
             max_attendees: undefined,
             event_type: EventType.ONLINE,
-            meeting_link: "",
+            meeting: {
+                id: "",
+                link: "",
+                created_at: "",
+                updated_at: "",
+            },
             address: {
                 address_line: "",
                 city: "",
@@ -43,9 +48,9 @@ export default function EventForm({
     const handleFormSubmit: SubmitHandler<EventFormData> = (data) => {
         if (data.event_type === EventType.ONLINE) {
             data.address = null;
-            if (!data.meeting_link) data.meeting_link = null;
+            if (!data.meeting) data.meeting = null;
         } else {
-            data.meeting_link = null;
+            data.meeting = null;
             if (data.address && !data.address.address_line) {
                 data.address = null;
             }
@@ -88,7 +93,7 @@ export default function EventForm({
                     {...register("happening_until", {
                         validate: (value) => {
                             const start = watch("happening_at");
-                            if (!value) return true; // optional
+                            if (!value) return true;
                             if (new Date(value) < new Date(start)) {
                                 return "Happening until must be on or after happening at";
                             }
@@ -151,7 +156,7 @@ export default function EventForm({
                 <div>
                     <label className="block text-sm mb-1 text-accent">Meeting Link</label>
                     <input
-                        {...register("meeting_link", {
+                        {...register("meeting.link", {
                             required:
                                 selectedType === EventType.ONLINE
                                     ? "Meeting link is required."
@@ -168,10 +173,10 @@ export default function EventForm({
                                 }
                             }
                         })}
-                        className={`w-full px-4 py-2 border rounded-xl ${errors.meeting_link ? "border-red-500" : ""}`}
+                        className={`w-full px-4 py-2 border rounded-xl ${errors.meeting?.link ? "border-red-500" : ""}`}
                     />
-                    {errors.meeting_link && (
-                        <p className="text-red-500 text-sm">{errors.meeting_link.message}</p>
+                    {errors.meeting?.link && (
+                        <p className="text-red-500 text-sm">{errors.meeting.link.message}</p>
                     )}
                 </div>
             )}

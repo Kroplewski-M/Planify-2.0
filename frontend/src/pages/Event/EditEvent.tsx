@@ -25,7 +25,14 @@ export default function EditEvent() {
                     publish: data.publish,
                     max_attendees: data.max_attendees,
                     event_type: data.meeting ? EventType.ONLINE : EventType.ADDRESS,
-                    meeting_link: data.meeting?.link ?? "",
+                    meeting: data.meeting
+                        ? {
+                            id: data.meeting.id,
+                            link: data.meeting.link,
+                            created_at: data.meeting.created_at,
+                            updated_at: data.meeting.updated_at
+                        }
+                        : null,
                     address: data.address
                         ? {
                             address_line: data.address.address_line,
@@ -48,7 +55,7 @@ export default function EditEvent() {
 
     const handleSubmit = (form: EventFormData) => {
         axiosClient.put(`/events/${id}`, form)
-            .then(() => navigate("/events"))
+            .then(() => navigate(`/events/${id}`))
             .catch(err => {
                 const response = err.response.data;
                 if (response?.errors) {

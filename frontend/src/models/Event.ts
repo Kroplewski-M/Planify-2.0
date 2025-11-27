@@ -7,6 +7,12 @@ export enum EventType {
     ONLINE = "ONLINE",
     ADDRESS = "ADDRESS"
 }
+export interface EventMeeting {
+    id: string;
+    link: string;
+    created_at: string;
+    updated_at: string;
+}
 export interface EventFormData {
     name: string;
     description?: string;
@@ -15,7 +21,7 @@ export interface EventFormData {
     publish: boolean;
     max_attendees?: number | null;
     event_type: EventType;
-    meeting_link?: string | null;
+    meeting?: EventMeeting | null;
     address?: EventAddress | null;
 }
 

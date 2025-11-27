@@ -12,12 +12,12 @@ export default function CreateEvent() {
         if (data.address && !data.address.address_line) {
             data.address = null;
         }
-        if (data.meeting_link === "") {
-            data.meeting_link = null;
+        if (data.meeting && data.meeting.link === "") {
+            data.meeting = null;
         }
 
         axiosClient.post("/events", data)
-            .then(() => navigate("/events"))
+            .then((res) => navigate(`/events/${res.data}`))
             .catch(err => {
                 const response = err.response?.data;
                 if (response?.errors) {

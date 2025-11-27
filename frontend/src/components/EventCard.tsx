@@ -19,8 +19,8 @@ export default function EventCard({ event }: { event: Event }) {
                 }
             </div>
             <div className="mt-4">
-                {event.meeting_link && (
-                    <a href={event.meeting_link} target="_blank" className="underline">Online Meeting</a>
+                {event.meeting && (
+                    <a href={event.meeting.link} target="_blank" className="underline">Online Meeting</a>
                 )}
                 {event.address && (
                     <p className="text-sm">

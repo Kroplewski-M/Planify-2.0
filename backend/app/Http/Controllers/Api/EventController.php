@@ -83,7 +83,7 @@ class EventController extends Controller
                 'postcode' => $data['address']['postcode'],
             ]);
         }
-        return response()->json($event->load(['address', 'meeting']), 201);
+        return response()->json($event->getKey(), 201);
     }
     public function update(EventRequest $request, $id)
     {
@@ -131,7 +131,7 @@ class EventController extends Controller
                 'meetingLinkId' => null
             ]);
         }
-        return response()->json(Event::with(['address', 'meeting'])->findOrFail($id));
+        return response()->json($event->getKey());
     }
     public function destroy($id)
     {

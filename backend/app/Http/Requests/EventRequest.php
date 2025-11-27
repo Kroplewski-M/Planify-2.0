@@ -25,7 +25,7 @@ class EventRequest extends FormRequest
             'name' => 'required|string|max:50',
             'description' => 'nullable|string',
             'happening_at' => 'required|date',
-            'happening_until' => 'required|date|after_or_equal:happening_at',
+            'happening_until' => 'date|after_or_equal:happening_at',
             'publish' => 'boolean',
             'max_attendees' => 'nullable|integer|min:1',
             'address' => 'nullable|array',

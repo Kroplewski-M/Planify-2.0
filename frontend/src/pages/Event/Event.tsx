@@ -75,12 +75,12 @@ export default function Event() {
                 )}
             </div>
             <hr />
-            <div className="p-4 rounded-lg space-y-2">
-                {event.meeting_link && (
+            <div className="mt-5 rounded-lg space-y-2">
+                {event.meeting && (
                     <p>
                         <strong>Online meeting:</strong>{" "}
                         <a
-                            href={event.meeting_link}
+                            href={event.meeting.link}
                             target="_blank"
                             className="text-blue-400 underline"
                         >
