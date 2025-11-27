@@ -3,13 +3,25 @@ import { useParams } from "react-router-dom";
 import axiosClient from "../../axios-client";
 import { type Event } from "../../models/Event";
 import { dateFormatter, formatDuration } from "../../models/Shared";
+import { useAuth } from "../../contexts/AuthContext";
+import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Event() {
     const { id } = useParams();
     const [event, setEvent] = useState<Event | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
+    const { userId } = useAuth();
+    const navigate = useNavigate();
+    const deleteEvent = async () => {
+        try {
+            await axiosClient.delete(`events/${event?.id}`)
+                .then(() => navigate(`/events`))
+        } catch (err) {
+            console.log(err);
+        }
+    }
     const fetchEvent = async () => {
         try {
             const res = await axiosClient.get(`/events/${id}`);
@@ -52,7 +64,26 @@ export default function Event() {
 
     return (
         <div className="max-w-3xl mx-auto mt-10 p-6 rounded-xl bg-white shadow-xl ">
-            <h1 className="text-3xl font-bold mb-4">{event.name}</h1>
+            <div className="flex items-center justify-between mb-6">
+                <h1 className="text-3xl font-bold">{event.name}</h1>
+                {userId === event.created_by_user_id && (
+                    <div className="flex gap-3">
+                        <NavLink
+                            to={`/edit/${event.id}`}
+                            className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition"
+                        >
+                            Edit
+                        </NavLink>
+
+                        <button
+                            onClick={deleteEvent}
+                            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:opacity-90 transition cursor-pointer"
+                        >
+                            Delete
+                        </button>
+                    </div>
+                )}
+            </div>
             <p className="text-lg text-gray-500 mb-6">{event.description}</p>
 
             <div className=" rounded-lg mb-6">

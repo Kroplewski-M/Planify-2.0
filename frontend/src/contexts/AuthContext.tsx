@@ -25,16 +25,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
         return localStorage.getItem("auth_token") != null;
     });
-    const [userId, setUserId] = useState<number | undefined>(undefined);
+    const [userId, setUserId] = useState<number | undefined>(() => {
+        const stored = localStorage.getItem("user_id");
+        return stored ? Number(stored) : undefined;
+    });
 
     const login = (token: string, userId: number) => {
         localStorage.setItem("auth_token", token);
+        localStorage.setItem("user_id", String(userId));
+
         setIsAuthenticated(true);
         setUserId(userId);
     };
 
     const logout = () => {
         localStorage.removeItem("auth_token");
+        localStorage.removeItem("user_id");
+
         setIsAuthenticated(false);
         setUserId(undefined);
     };
