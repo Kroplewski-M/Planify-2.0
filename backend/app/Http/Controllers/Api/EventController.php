@@ -17,10 +17,18 @@ class EventController extends Controller
     {
         $skip = (int) $request->query('skip', 0);
         $take = (int) $request->query('take', 10);
-        $events = Event::with(['address', 'meeting'])
-                    ->skip($skip)
-                    ->take($take)
-                    ->get();
+        $search = $request->query('search');
+        $query = Event::with(['address', 'meeting']);
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+        $events = $query
+            ->skip($skip)
+            ->take($take)
+            ->get();
         return response()->json($events);
     }
     public function Show($id){

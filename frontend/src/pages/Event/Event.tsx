@@ -1,0 +1,115 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axiosClient from "../../axios-client";
+import { type Event } from "../../models/Event";
+import { dateFormatter, formatDuration } from "../../models/Shared";
+
+export default function Event() {
+    const { id } = useParams();
+    const [event, setEvent] = useState<Event | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    const fetchEvent = async () => {
+        try {
+            const res = await axiosClient.get(`/events/${id}`);
+            setEvent(res.data);
+        } catch (err: any) {
+            const response = err.response?.data;
+            if (response?.errors) {
+                const flat = Object.values(response.errors).flat() as string[];
+                setError(flat.join(", "));
+            } else {
+                setError("Could not load the event");
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchEvent();
+    }, [id]);
+
+    if (loading)
+        return (
+            <div className="text-gray-200 text-center mt-10">Loading event...</div>
+        );
+
+    if (error)
+        return (
+            <div className="text-red-400 text-center mt-10">
+                Error: {error}
+            </div>
+        );
+
+    if (!event)
+        return (
+            <div className="text-gray-200 text-center mt-10">
+                Event not found.
+            </div>
+        );
+
+    return (
+        <div className="max-w-3xl mx-auto mt-10 p-6 rounded-xl bg-primary shadow-xl text-gray-200">
+            <h1 className="text-3xl font-bold mb-4">{event.name}</h1>
+            <p className="text-lg text-gray-300 mb-6">{event.description}</p>
+
+            <div className="bg-gray-800 p-4 rounded-lg mb-6">
+                <p>
+                    <strong>Starts:</strong>{" "}
+                    {dateFormatter.format(new Date(event.happening_at))}
+                </p>
+
+                {event.happening_until && (
+                    <div>
+                        <p>
+                            <strong>Ends:</strong>{" "}
+                            {dateFormatter.format(new Date(event.happening_until))}
+                        </p>
+                        <p className="mt-2 text-gray-300">
+                            <strong>Duration:</strong>{" "}
+                            {formatDuration(event.happening_at, event.happening_until)}
+                        </p>
+                    </div>
+                )}
+            </div>
+
+            <div className="bg-gray-800 p-4 rounded-lg space-y-2">
+                {event.meeting_link && (
+                    <p>
+                        <strong>Online meeting:</strong>{" "}
+                        <a
+                            href={event.meeting_link}
+                            target="_blank"
+                            className="text-blue-400 underline"
+                        >
+                            Join meeting
+                        </a>
+                    </p>
+                )}
+                {event.address && (
+                    <div>
+                        <strong>Location:</strong>
+                        <p>
+                            📍 {event.address.city}, {event.address.address_line},{" "}
+                            {event.address.postcode}
+                        </p>
+                        <div className="mt-5">
+                            <iframe
+                                className="w-full min-h-[500px] rounded-md"
+                                loading="lazy"
+                                allowFullScreen
+                                referrerPolicy="no-referrer-when-downgrade"
+                                src={`https://www.google.com/maps/embed/v1/place?key=${import.meta.env.VITE_GOOGLE_API_KEY}
+                            &q=${encodeURIComponent(
+                                    `${event.address.address_line}, ${event.address.city}, ${event.address.postcode}`
+                                )}`}
+                            ></iframe>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
