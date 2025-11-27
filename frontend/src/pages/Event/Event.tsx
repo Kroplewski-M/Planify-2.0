@@ -51,11 +51,11 @@ export default function Event() {
         );
 
     return (
-        <div className="max-w-3xl mx-auto mt-10 p-6 rounded-xl bg-primary shadow-xl text-gray-200">
+        <div className="max-w-3xl mx-auto mt-10 p-6 rounded-xl bg-white shadow-xl ">
             <h1 className="text-3xl font-bold mb-4">{event.name}</h1>
-            <p className="text-lg text-gray-300 mb-6">{event.description}</p>
+            <p className="text-lg text-gray-500 mb-6">{event.description}</p>
 
-            <div className="bg-gray-800 p-4 rounded-lg mb-6">
+            <div className=" rounded-lg mb-6">
                 <p>
                     <strong>Starts:</strong>{" "}
                     {dateFormatter.format(new Date(event.happening_at))}
@@ -67,15 +67,15 @@ export default function Event() {
                             <strong>Ends:</strong>{" "}
                             {dateFormatter.format(new Date(event.happening_until))}
                         </p>
-                        <p className="mt-2 text-gray-300">
+                        <p className="mt-2">
                             <strong>Duration:</strong>{" "}
                             {formatDuration(event.happening_at, event.happening_until)}
                         </p>
                     </div>
                 )}
             </div>
-
-            <div className="bg-gray-800 p-4 rounded-lg space-y-2">
+            <hr />
+            <div className="p-4 rounded-lg space-y-2">
                 {event.meeting_link && (
                     <p>
                         <strong>Online meeting:</strong>{" "}

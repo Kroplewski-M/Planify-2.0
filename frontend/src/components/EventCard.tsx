@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function EventCard({ event }: { event: Event }) {
     const navigate = useNavigate();
     return (
-        <div onClick={() => navigate(`/events/${event.id}`)} className="bg-primary rounded-xl p-4 shadow text-gray-200 cursor-pointer duration-150 hover:scale-[1.1]">
+        <div onClick={() => navigate(`/events/${event.id}`)} className="bg-white rounded-xl p-4 shadow cursor-pointer duration-150 hover:scale-[1.1]">
             <h2 className="text-xl font-semibold">{event.name}</h2>
             <p className="text-sm">{event.description}</p>
 
