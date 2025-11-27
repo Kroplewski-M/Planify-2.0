@@ -3,10 +3,14 @@ export interface EventAddress {
     city: string;
     postcode: string;
 }
-export enum EventType {
-    ONLINE = "ONLINE",
-    ADDRESS = "ADDRESS"
-}
+
+export const EventType = {
+  ONLINE: "ONLINE",
+  ADDRESS: "ADDRESS",
+} as const;
+
+export type EventType = typeof EventType[keyof typeof EventType];
+
 export interface EventMeeting {
     id: string;
     link: string;
