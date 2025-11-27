@@ -29,7 +29,7 @@ export default function Login() {
     axiosClient.post('/auth/login', data)
       .then((res) => {
         if (res.status === 200) {
-          login(res.data.token);
+          login(res.data.token, res.data.userId);
           navigate(from);
         }
         else {

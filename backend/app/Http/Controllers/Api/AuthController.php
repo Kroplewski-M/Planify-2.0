@@ -19,7 +19,7 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
         $token = $user->createToken('auth')->plainTextToken;
-        return response()->json(['token' => $token], 201);
+        return response()->json(['token' => $token, 'userId' => $user->getKey()], 201);
     }
     public function login(LoginRequest $request){
         $credentials = $request->validated();
@@ -30,7 +30,7 @@ class AuthController extends Controller
         }
         $user = Auth::user();
         $token = $user->createToken('auth')->plainTextToken;
-        return response(['token' => $token]);
+        return response(['token' => $token, 'userId' => $user->getKey()]);
     }
     public function logout(Request $request){
         $user = $request->user();
