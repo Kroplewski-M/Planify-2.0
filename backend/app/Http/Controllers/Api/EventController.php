@@ -174,5 +174,15 @@ class EventController extends Controller
         $event->attendees()->detach($user->id);
         return response()->json(['success' => true]);
     }
+    public function attending(Request $request)
+    {
+        $user = $request->user();
 
+        $events = $user->eventsAttending()
+            ->with(['address', 'meeting'])
+            ->whereDate('starts_at', '>=', today())
+            ->get();
+
+        return response()->json($events);
+    }
 }

@@ -63,6 +63,15 @@ export default function Navbar() {
                 >
                   My Events
                 </NavLink>
+                <NavLink
+                  to="/attending"
+                  className={({ isActive }) =>
+                    `text-accent text-xl hover:font-bold transition-all ${isActive ? "underline underline-offset-4 decoration-2" : ""
+                    }`
+                  }
+                >
+                  Attending
+                </NavLink>
               </div>
             ) : ("")
           }

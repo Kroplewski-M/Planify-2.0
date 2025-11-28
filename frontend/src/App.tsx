@@ -9,6 +9,7 @@ import EditEvent from './pages/Event/EditEvent';
 import EventsPage from './pages/Event/Index';
 import Event from './pages/Event/Event';
 import MyEvents from './pages/Event/MyEvents';
+import Attending from './pages/Event/Attending';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/Create" element={<CreateEvent />} />
             <Route path="/Edit/:id" element={<EditEvent />} />
             <Route path="/MyEvents" element={<MyEvents />} />
+            <Route path="/Attending" element={<Attending />} />
           </Route>
         </Routes>
       </BrowserRouter>
