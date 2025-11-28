@@ -39,14 +39,8 @@ class EventController extends Controller
     public function myEvents(Request $request)
     {
         $userId = $request->user()->id;
-
-        $skip = (int) $request->query('skip', 0);
-        $take = (int) $request->query('take', 10);
-
         $events = Event::with(['address', 'meeting'])
                     ->where('created_by_user_id', $userId)
-                    ->skip($skip)
-                    ->take($take)
                     ->get();
 
         return response()->json($events);

@@ -24,11 +24,11 @@ Route::middleware('auth:sanctum')->group(function(){
 
 //EVENTS
 Route::get('/events', [EventController::class, 'index']); 
-Route::get('/events/{id}', [EventController::class, 'Show']);
+Route::get('/events/{id}', [EventController::class, 'Show'])->whereUuid('id');
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/events', [EventController::class, 'store']);
-    Route::put('/events/{id}', [EventController::class, 'update']);
-    Route::delete('/events/{id}', [EventController::class, 'destroy']);
+    Route::put('/events/{id}', [EventController::class, 'update'])->whereUuid('id');
+    Route::delete('/events/{id}', [EventController::class, 'destroy'])->whereUuid('id');
     Route::get('/events/my', [EventController::class, 'myEvents']);
 });
 
