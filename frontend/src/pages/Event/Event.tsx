@@ -26,6 +26,7 @@ export default function Event() {
         try {
             const res = await axiosClient.get(`/events/${id}`);
             setEvent(res.data);
+            console.log(res.data);
         } catch (err: any) {
             const response = err.response?.data;
             if (response?.errors) {

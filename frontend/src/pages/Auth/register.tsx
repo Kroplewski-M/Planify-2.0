@@ -26,7 +26,7 @@ export default function Register() {
         console.log(data);
         axiosClient.post('/auth/register', data)
             .then((res) => {
-                login(res.data.token);
+                login(res.data.token, res.data.token);
                 navigate("/Events");
             })
             .catch(err => {

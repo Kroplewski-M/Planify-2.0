@@ -32,7 +32,8 @@ class EventRequest extends FormRequest
             'address.address_line' => 'required_with:address|string|max:255',
             'address.city' => 'required_with:address|string|max:255',
             'address.postcode' => 'required_with:address|string|max:20',
-            'meeting_link' => 'nullable|string|max:255',
+            'meeting' => 'nullable|array',
+            'meeting.link' => 'nullable|string|max:255',
         ];
         return $rules;
     }
@@ -41,11 +42,11 @@ class EventRequest extends FormRequest
         $validator->after(function ($validator) {
             $data = $this->all();
 
-            if (!isset($data['meeting_link']) && !isset($data['address'])) {
+            if (!isset($data['meeting']) && !isset($data['address'])) {
                 $validator->errors()->add('base', 'Either meeting_link or address must be provided.');
             }
 
-            if (isset($data['meeting_link']) && isset($data['address'])) {
+            if (isset($data['meeting']) && isset($data['address'])) {
                 $validator->errors()->add('base', 'Provide only one: meeting_link or address.');
             }
         });

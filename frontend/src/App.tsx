@@ -8,6 +8,7 @@ import { RequireAuth } from './components/RequiredAuth';
 import EditEvent from './pages/Event/EditEvent';
 import EventsPage from './pages/Event/Index';
 import Event from './pages/Event/Event';
+import MyEvents from './pages/Event/MyEvents';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route element={<RequireAuth />}>
             <Route path="/Create" element={<CreateEvent />} />
             <Route path="/Edit/:id" element={<EditEvent />} />
+            <Route path="/MyEvents" element={<MyEvents />} />
           </Route>
         </Routes>
       </BrowserRouter>

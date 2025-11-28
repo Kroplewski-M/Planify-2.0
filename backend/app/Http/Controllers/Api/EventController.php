@@ -64,14 +64,14 @@ class EventController extends Controller
             'publish' => $data['publish'] ?? false,
             'max_attendees' => $data['max_attendees'] ?? null,
             'created_by_user_id' => Auth::id(),
-            'meetingLinkId' => isset($data['meeting_link']) ? $eventId : null,
+            'meetingLinkId' => isset($data['meeting']) ? $eventId : null,
             'addressId' => isset($data['address']) ? $eventId : null,
         ]);
 
-        if (isset($data['meeting_link'])) {
+        if (isset($data['meeting'])) {
             EventMeeting::create([
                 'id' => $eventId,
-                'link' => $data['meeting_link'],
+                'link' => $data['meeting']['link'],
             ]);
         }
 
@@ -103,14 +103,14 @@ class EventController extends Controller
             'publish' => $data['publish'] ?? $event->publish,
             'max_attendees' => $data['max_attendees'] ?? $event->max_attendees,
         ]);
-        if (isset($data['meeting_link'])) {
+        if (isset($data['meeting']['link'])) {
             $event->address?->delete();
 
             if ($event->meeting) {
-                $event->meeting->update(['link' => $data['meeting_link']]);
+                $event->meeting->update(['link' => $data['meeting']['link']]);
             }
             else {
-                EventMeeting::create(['id' => $event->id, 'link' => $data['meeting_link']]);
+                EventMeeting::create(['id' => $event->id, 'link' => $data['meeting']['link']]);
             }
             $event->update([
                 'meetingLinkId' => $event->id,

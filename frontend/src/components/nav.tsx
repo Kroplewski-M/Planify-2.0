@@ -44,15 +44,26 @@ export default function Navbar() {
           </NavLink>
           {
             isAuthenticated ? (
-              <NavLink
-                to="/create"
-                className={({ isActive }) =>
-                  `text-accent text-xl hover:font-bold transition-all ${isActive ? "underline underline-offset-4 decoration-2" : ""
-                  }`
-                }
-              >
-                Create
-              </NavLink>
+              <div className="flex gap-12">
+                <NavLink
+                  to="/create"
+                  className={({ isActive }) =>
+                    `text-accent text-xl hover:font-bold transition-all ${isActive ? "underline underline-offset-4 decoration-2" : ""
+                    }`
+                  }
+                >
+                  Create
+                </NavLink>
+                <NavLink
+                  to="/myEvents"
+                  className={({ isActive }) =>
+                    `text-accent text-xl hover:font-bold transition-all ${isActive ? "underline underline-offset-4 decoration-2" : ""
+                    }`
+                  }
+                >
+                  My Events
+                </NavLink>
+              </div>
             ) : ("")
           }
         </div>
@@ -97,15 +108,27 @@ export default function Navbar() {
           </NavLink>
           {
             isAuthenticated ? (
-              <NavLink
-                to="/create"
-                className={({ isActive }) =>
-                  `text-accent text-xl hover:font-bold transition-all ${isActive ? "underline underline-offset-4 decoration-2" : ""
-                  }`
-                }
-              >
-                Create
-              </NavLink>
+              <div>
+                <NavLink
+                  to="/create"
+                  className={({ isActive }) =>
+                    `text-accent text-xl hover:font-bold transition-all ${isActive ? "underline underline-offset-4 decoration-2" : ""
+                    }`
+                  }
+                >
+                  Create
+                </NavLink>
+                <NavLink
+                  to="/myEvents"
+                  className={({ isActive }) =>
+                    `text-accent text-xl hover:font-bold transition-all ${isActive ? "underline underline-offset-4 decoration-2" : ""
+                    }`
+                  }
+                >
+                  My Events
+                </NavLink>
+              </div>
+
             ) : ("")
           }
           {!isAuthenticated ? (
