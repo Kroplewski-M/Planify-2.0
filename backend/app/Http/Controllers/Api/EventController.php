@@ -32,7 +32,7 @@ class EventController extends Controller
         return response()->json($events);
     }
     public function Show($id){
-        $event = Event::with(['address', 'meeting'])
+        $event = Event::with(['address', 'meeting','attendees'])
                   ->findOrFail($id);
         return response()->json($event);
     }
@@ -138,4 +138,41 @@ class EventController extends Controller
 
         return response()->json(['message' => 'Event deleted']);
     }
+
+
+    public function attend(Request $request, $id)
+    {
+        $user = $request->user();
+        $event = Event::findOrFail($id);
+
+        if ($event->created_by_user_id === $user->id) {
+            return response()->json(['error' => 'You are the organizer of this event'], 400);
+        }
+
+        if ($event->max_attendees !== null && 
+            $event->attendees()->count() >= $event->max_attendees) 
+        {
+            return response()->json(['error' => 'Event is full'], 400);
+        }
+
+        if ($event->attendees()->where('user_id', $user->id)->exists()) {
+            return response()->json(['message' => 'You are already attending'], 200);
+        }
+
+        $event->attendees()->attach($user->id);
+
+        return response()->json(['success' => true]);
+    }
+    public function cancelAttendance(Request $request, $id)
+    {
+        $user = $request->user();
+        $event = Event::findOrFail($id);
+
+        if (!$event->attendees()->where('user_id', $user->id)->exists()) {
+            return response()->json(['error' => 'You are not attending this event'], 400);
+        }
+        $event->attendees()->detach($user->id);
+        return response()->json(['success' => true]);
+    }
+
 }

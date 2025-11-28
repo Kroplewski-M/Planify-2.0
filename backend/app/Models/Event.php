@@ -27,4 +27,10 @@ class Event extends Model
     {
         return $this->hasOne(EventAddress::class, 'id');
     }
+public function attendees()
+{
+    return $this->belongsToMany(User::class, 'event_user')
+        ->select('users.id', 'users.name')
+        ->withTimestamps();
+}
 }

@@ -5,8 +5,8 @@ export interface EventAddress {
 }
 
 export const EventType = {
-  ONLINE: "ONLINE",
-  ADDRESS: "ADDRESS",
+    ONLINE: "ONLINE",
+    ADDRESS: "ADDRESS",
 } as const;
 
 export type EventType = typeof EventType[keyof typeof EventType];
@@ -28,8 +28,12 @@ export interface EventFormData {
     meeting?: EventMeeting | null;
     address?: EventAddress | null;
 }
-
+export interface Attendees {
+    id: number,
+    name: string,
+}
 export interface Event extends EventFormData {
     id: string;
     created_by_user_id: number;
+    attendees: Attendees[];
 }

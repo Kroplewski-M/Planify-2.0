@@ -30,6 +30,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/events/{id}', [EventController::class, 'update'])->whereUuid('id');
     Route::delete('/events/{id}', [EventController::class, 'destroy'])->whereUuid('id');
     Route::get('/events/my', [EventController::class, 'myEvents']);
+    Route::post('/events/{id}/attend', [EventController::class, 'attend'])->whereUuid('id');
+    Route::delete('/events/{id}/attend', [EventController::class, 'cancelAttendance'])->whereUuid('id');
 });
 
 
