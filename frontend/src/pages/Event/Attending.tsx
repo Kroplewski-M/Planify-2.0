@@ -35,7 +35,7 @@ export default function Attending() {
                         ))}
                     </div>
                 </>) : (<>
-                    <p>No Events Found</p>
+                    <p>No Future Attending Events Found</p>
                 </>)
             }
         </div>
